@@ -5,6 +5,7 @@ require 'org/to/html'
 module Org
   class Token
     include ToHtml
+    include ToToc
   end
 end
 
@@ -20,11 +21,11 @@ describe Org::Markup do
   end
 
   should 'markup headers' do
-    t("* header").should == '<h1>header</h1>'
-    t("** header").should == '<h2>header</h2>'
-    t("*** header").should == '<h3>header</h3>'
-    t("**** header").should == '<h4>header</h4>'
-    t("***** header").should == '<h5>header</h5>'
+    t("* header"     ).should == '<h1>header</h1>'
+    t("** header"    ).should == '<h2>header</h2>'
+    t("*** header"   ).should == '<h3>header</h3>'
+    t("**** header"  ).should == '<h4>header</h4>'
+    t("***** header" ).should == '<h5>header</h5>'
     t("****** header").should == '<h6>header</h6>'
   end
 

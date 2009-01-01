@@ -20,7 +20,7 @@ module Org
     end
 
     def html_text
-      Rack::Utils.escape_html(values.join)
+      Org.escape_html(values.join)
     end
 
     # unify toc_id somwhere?
@@ -74,10 +74,10 @@ module Org
 
     def build_tag(name, attr = {}, text = [])
       @out << "<#{name}"
-      @out << attr.map{|k,v| %[ #{k}="#{escape_entities(v)}"] }.join
+      @out << attr.map{|k,v| %[ #{k}="#{Org.escape_html(v)}"] }.join
       if text != [] or block_given?
         @out << ">"
-        @out << escape_entities([text].join)
+        @out << Org.escape_html([text].join)
         if block_given?
           text = yield
           @out << text.to_str if text != @out and text.respond_to?(:to_str)
@@ -86,14 +86,6 @@ module Org
       else
         @out << ' />'
       end
-    end
-
-    def escape_entities(s)
-      s.to_s.gsub(/&/, '&amp;').
-        gsub(/"/, '&quot;').
-        gsub(/'/, '&apos;').
-        gsub(/</, '&lt;').
-        gsub(/>/, '&gt;')
     end
   end
 end
