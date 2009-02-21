@@ -15,6 +15,7 @@ module Org
   end
 end
 
+require 'org/version'
 require 'org/stringscanner'
 require 'org/markup'
 require 'org/state'
