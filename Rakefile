@@ -64,16 +64,14 @@ Gem::Specification.new do |s|
   s.name = "org"
   s.version = #{ORG_VERSION.dump}
 
-  s.summary = "Powerful web-framework wrapper for Rack."
-  s.description = "Simple, straight-forward, base for web-frameworks."
+  s.summary = "Org provides transformation of a selected subset of org-mode markup for wikis."
+  s.description = "Org provides transformation of a selected subset of org-mode markup for wikis."
   s.platform = "ruby"
   s.has_rdoc = true
   s.author = "Michael 'manveru' Fellinger"
   s.email = "m.fellinger@gmail.com"
   s.homepage = "http://github.com/manveru/org"
   s.require_path = "lib"
-
-  s.add_dependency('rack', '>= 0.4.0')
 
   s.files = [
 #{files}
