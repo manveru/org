@@ -1,11 +1,12 @@
 module Org
   OrgMode = Markup.new
+  eol = /\n/ # we keep this simple and convert the input string instead
 
   OrgMode.scope(:block, :indent => true) do |block|
-    block.rule :header, /(\*+)\s+(.*)(\n|\z)/, :bol => true
+    block.rule :header, /(\*+)\s+(.*)(#{eol}|\z)/, :bol => true
     block.rule :table, /\|([^|]+)/, :bol => true, :start => :table, :unscan => true
     block.rule :ul, /[ \t]+(\*+)\s*(.*)/, :start => :ul, :unscan => true, :bol => true
-    block.rule :br, /\n/
+    block.rule :br, eol
     block.rule :p, /(.)/, :bol => true, :start => :inline, :unscan => true
     block.rule :space, /\s/
 
@@ -31,24 +32,24 @@ module Org
 
     block.scope :ul do |ul|
       ul.rule :li, /[ \t]+\*+\s*/, :start => :li, :bol => true
-      ul.rule :close, /\n/, :end => :ul
+      ul.rule :close, eol, :end => :ul
       ul.rule :close, /(.)/, :end => :ul, :unscan => true
 
       ul.scope :li do |li|
         li.apply(&inline_rules)
         li.rule :text, /(.)/
         li.rule :ul, /[ \t]+\*+\s*/, :start => ul, :bol => true
-        li.rule :close, /\n/, :end => :li
+        li.rule :close, eol, :end => :li
       end
     end
 
     block.scope(:inline, :indent => false) do |inline|
       inline.apply(&inline_rules)
-      inline.rule :highlight, /\{\{\{[\t ]*(\S+)\n(.*?)\n\}\}\}/m
-      inline.rule :highlight, /\{\{\{\n(.*?)\n\}\}\}/m
+      inline.rule :highlight, /\{\{\{[\t ]*(\S+)#{eol}(.*?)#{eol}\}\}\}/m
+      inline.rule :highlight, /\{\{\{#{eol}(.*?)#{eol}\}\}\}/m
       inline.rule :text, /(.)/
-      inline.rule :close, /\n\n+/, :end => :inline
-      inline.rule :br, /\n/
+      inline.rule :close, /#{eol}#{eol}+/, :end => :inline
+      inline.rule :br, eol
     end
 
     block.scope(:table, :indent => true) do |table|
@@ -58,12 +59,12 @@ module Org
       # | Mrs. Y |    888-888 |   21 |
 
       table.rule :tr, /\|([^|]+)/, :bol => true, :unscan => true, :start => :tr
-      table.rule :close, /\n/, :end => :table
+      table.rule :close, eol, :end => :table
 
       table.scope(:tr, :indent => true) do |tr|
         tr.rule :table_separator, /\|[+-]+\|/, :ignore => true
-        tr.rule :close, /\|\n/, :end => :tr
-        tr.rule :close, /\n/, :end => :tr
+        tr.rule :close, /\|#{eol}/, :end => :tr
+        tr.rule :close, eol, :end => :tr
         tr.rule :td, /\|/, :start => :td
 
         tr.scope :td do |td|

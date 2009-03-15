@@ -50,4 +50,10 @@ describe Org::Markup do
     t('[[http://go.to/]]').should == '<p><a href="http://go.to/">http://go.to/</a></p>'
     t('[[http://go.to/][Go to]]').should == '<p><a href="http://go.to/">Go to</a></p>'
   end
+
+  should 'work with \r, \n, and \n\r' do
+    t("a\nb").should == '<p>a<br />b</p>'
+    t("a\r\nb").should == t("a\nb")
+    t("a\rb").should == t("a\nb")
+  end
 end
