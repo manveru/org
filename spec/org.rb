@@ -6,6 +6,12 @@ module Org
   class Token
     include ToHtml
     include ToToc
+
+    def html_a(*args)
+      link, desc = *values
+      href = link =~ /^https?:\/\// ? link : "/#{link}"
+      tag(:a, (desc || link), :href => href)
+    end
   end
 end
 
@@ -21,12 +27,12 @@ describe Org::Markup do
   end
 
   should 'markup headers' do
-    t("* header"     ).should == '<h1>header</h1>'
-    t("** header"    ).should == '<h2>header</h2>'
-    t("*** header"   ).should == '<h3>header</h3>'
-    t("**** header"  ).should == '<h4>header</h4>'
-    t("***** header" ).should == '<h5>header</h5>'
-    t("****** header").should == '<h6>header</h6>'
+    t("* header"     ).should == '<h1 id="header">header</h1>'
+    t("** header"    ).should == '<h2 id="header">header</h2>'
+    t("*** header"   ).should == '<h3 id="header">header</h3>'
+    t("**** header"  ).should == '<h4 id="header">header</h4>'
+    t("***** header" ).should == '<h5 id="header">header</h5>'
+    t("****** header").should == '<h6 id="header">header</h6>'
   end
 
   should 'markup inline' do
