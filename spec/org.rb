@@ -62,4 +62,16 @@ describe Org::Markup do
     t("a\r\nb").should == t("a\nb")
     t("a\rb").should == t("a\nb")
   end
+
+  should 'markup lists' do
+    t(" * one").should == '<ul><li>one</li></ul>'
+    t(" * one\n * two").should == '<ul><li>one</li><li>two</li></ul>'
+    t(" * one
+ * two
+ * three").should == '<ul><li>one</li><li>two</li><li>three</li></ul>'
+  end
+
+  should 'markup inline in lists' do
+    t(' * first _foo_ /bar/').should == '<ul><li>first <u>foo</u> <i>bar</i></li></ul>'
+  end
 end
