@@ -5,7 +5,8 @@ module Org
   OrgMode.scope(:block, :indent => true) do |block|
     block.rule :header, /(\*+)\s+(.*)(#{eol}|\z)/, :bol => true
     block.rule :table, /\|([^|]+)/, :bol => true, :start => :table, :unscan => true
-    block.rule :ul, /[ \t]+(\*+)\s*(.*)/, :start => :ul, :unscan => true, :bol => true
+    block.rule :ul, /[ \t]+[\*\+\-]+\s*(.*)/, :start => :ul, :unscan => true, :bol => true
+    block.rule :ol, /[ \t]+[0-9]+[\.\)]\s*(.*)/, :start => :ol, :unscan => true, :bol => true
     block.rule :br, eol
     block.rule :p, /(.)/, :bol => true, :start => :inline, :unscan => true
     block.rule :space, /\s/
@@ -31,14 +32,27 @@ module Org
     end
 
     block.scope :ul do |ul|
-      ul.rule :li, /[ \t]+\*+\s*/, :start => :li, :bol => true
+      ul.rule :li, /[ \t]+[\*\+\-]+\s*/, :start => :li, :bol => true
       ul.rule :close, eol, :end => :ul
       ul.rule :close, /(.)/, :end => :ul, :unscan => true
 
       ul.scope :li do |li|
         li.apply(&inline_rules)
         li.rule :text, /(.)/
-        li.rule :ul, /[ \t]+\*+\s*/, :start => ul, :bol => true
+        li.rule :ul, /[ \t]+[\*\+\-]+\s*/, :start => ul, :bol => true
+        li.rule :close, eol, :end => :li
+      end
+    end
+
+    block.scope :ol do |ol|
+      ol.rule :li, /[ \t]+[0-9]+[\.\)]\s*/, :start => :li, :bol => true
+      # ol.rule :ul, /[ \t]+[\*\-\+]+\s*/, :start => :ul, :bol => true, :unscan => true
+      ol.rule :close, eol, :end => :ol
+      ol.rule :close, /(.)/, :end => :ol, :unscan => true
+
+      ol.scope :li do |li|
+        li.apply(&inline_rules)
+        li.rule :text, /(.)/
         li.rule :close, eol, :end => :li
       end
     end

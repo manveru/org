@@ -63,12 +63,27 @@ describe Org::Markup do
     t("a\rb").should == t("a\nb")
   end
 
-  should 'markup lists' do
+  should 'markup unorderd lists' do
     t(" * one").should == '<ul><li>one</li></ul>'
     t(" * one\n * two").should == '<ul><li>one</li><li>two</li></ul>'
     t(" * one
  * two
  * three").should == '<ul><li>one</li><li>two</li><li>three</li></ul>'
+    t(" + one").should == '<ul><li>one</li></ul>'
+    t(" - one").should == '<ul><li>one</li></ul>'
+  end
+
+  should 'markup ordered lists' do
+    t(" 1. one").should == '<ol><li>one</li></ol>'
+    t(" 1) one").should == '<ol><li>one</li></ol>'
+    t(" 1. one\n 2. two").should == '<ol><li>one</li><li>two</li></ol>'
+  end
+
+  should 'markup nested lists' do
+    t(" * one\n + nest1\n + nest2\n * two\n").should ==
+      '<ul><li>one</li><ul><li>nest1</li><li>nest2</li></ul></ul>'
+    t(" 1. one\n + nest1\n + nest2\n 2. two\n").should ==
+      '<ol><li>one</li><ul><li>nest1</li><li>nest2</li></ul></ol>'
   end
 
   should 'markup inline in lists' do
