@@ -1,4 +1,20 @@
-[dbb09d3 | Sat Feb 21 04:49:40 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+[96fa8b5 | Sat Mar 28 06:57:31 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Better rake tasks, now managed by raku
+
+[971a989 | Fri Mar 20 05:23:05 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Spec how lists behave right now
+
+[c21d3fb | Sun Mar 15 06:39:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the header spec
+
+[93db8d3 | Sun Mar 15 06:35:43 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Transform input to use \n, add specs for it
+
+[9b1ff3a | Sat Feb 21 04:49:40 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Fix gemspec
 

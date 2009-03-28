@@ -17,3 +17,13 @@ lib/org/token.rb
 lib/org/version.rb
 org.gemspec
 spec/org.rb
+tasks/bacon.rake
+tasks/changelog.rake
+tasks/gem.rake
+tasks/gem_installer.rake
+tasks/grancher.rake
+tasks/install_dependencies.rake
+tasks/manifest.rake
+tasks/rcov.rake
+tasks/release.rake
+tasks/reversion.rake
